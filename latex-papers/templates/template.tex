@@ -1,0 +1,42 @@
+%
+% Main
+%
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+%\usepackage[francais]{babel}
+% Use of .eps files placed into 'imgs' directory
+\usepackage{graphicx}
+\graphicspath{{./imgs/}}
+\DeclareGraphicsExtensions{.eps}
+\usepackage{ifpdf}
+\ifpdf
+  \usepackage{epstopdf}
+\fi
+
+% Use urls
+\usepackage{url}
+
+% Often used words
+\hyphenation{meta-model}
+
+%
+% Title and stuffs
+%
+
+\title{#PROJNAME#}
+
+%
+% Document
+%
+\begin{document}
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+% Bibliography
+%\bibliographystyle{...}
+%\bibliography{#PROJNAME#}
+
+\end{document}
