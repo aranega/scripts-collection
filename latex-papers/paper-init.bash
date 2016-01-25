@@ -1,11 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 DEFAULTPATH=.
-TEMPLATESPATH=./templates
+TEMPLATEDIR=templates
+
+ABSOLUTE_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
+TEMPLATESPATH=${ABSOLUTE_PATH}/${TEMPLATEDIR}
 KNOWNSTYLES="lncs|ieee|acm|elsevier"
 PREFIX=${DEFAULTPATH}
 
-usage="$(basename "$0") [-h] [-s STYLE] [-u URL] PROJECT_NAME -- Setup a new latex project
+usage="$(basename "$0") [-h] [-s STYLE] [-d DIRECTOY] [-u URL] PROJECT_NAME -- Setup a new latex project
 
 where:
     -h, -help, --help       show this help text
@@ -14,40 +17,34 @@ where:
     -c, --clean             clean existing style dir for PROJECT_NAME
     -d                      gives the directory where the project should be found/created
     PROJECT_NAME            chains which need to be compiled and/or deployed
+
+WARNING: Long options as '--style' or '--url' only work if GNU getopt is used.
 "
 
-# Options evaluations should use getopts instead for portability?
-OPTS=$( getopt -o u:s:d:ch -l url:,style:,clean,help -- "$@" )
+getopt -T > /dev/null
+if [ $? -eq 4 ]
+then
+  OPTS=$( getopt -o u:s:d:ch -l url:,style:,clean,help -- "$@" )
+else
+  OPTS=$( getopt u:s:d:ch "$@" )
+fi
+
 [ $? != 0 ] && exit 2
 
 eval set -- "$OPTS"
 while true ; do
     case "$1" in
         -s|--style)
-            STYLE=$2
-            [[ ! ${STYLE} =~ ${KNOWNSTYLES} ]] && {
-              echo "Incorrect options provided, target must be [${KNOWNSTYLES}]"
-              exit 3
-            }
-            shift 2
-            ;;
-        -u|--url)
-            URL=$2
-            shift 2
-            ;;
-        -c|--clean)
-            CHANGESTYLE=true
-            shift
-            ;;
-        -d)
-            PREFIX=$2
-            PREFIX=${PREFIX%/}
-            shift 2
-            ;;
-        -h|--help)
-            echo "$usage";
-            exit 5
-            ;;
+        STYLE=$2
+        [[ ! ${STYLE} =~ ${KNOWNSTYLES} ]] && {
+          echo "Incorrect options provided, target must be [${KNOWNSTYLES}]"
+          exit 3
+        }
+        shift 2;;
+        -u|--url) URL=$2; shift 2;;
+        -c|--clean) CHANGESTYLE=true; shift;;
+        -d) PREFIX=$2; PREFIX=${PREFIX%/}; shift 2;;
+        -h|--help) echo "$usage"; exit 5;;
         --) shift ; break ;;
         *) echo "Internal error!" ; exit 1 ;;
     esac
@@ -101,11 +98,15 @@ STYLEDIR=${PROJPATH}/styles
   exit 6
 }
 
+[ -f ${PROJPATH}/${NAME}.tex ] && {
+  exit 0
+}
+
 # Copy template files and filter vars
 cp ${TEMPLATESPATH}/Makefile ${PROJPATH}/
 sed 's/#PROJNAME#/'${NAME}'/g' ${TEMPLATESPATH}/template.tex > ${PROJPATH}/${NAME}.tex
 touch ${PROJPATH}/${NAME}.bib
 
 echo "
-Your project ${NAME} is set at this location: $(readlink -f ${PROJPATH})
+Your project ${NAME} is set at this location: $(cd `dirname "${PROJPATH}"` && pwd)
 If you used a pre-existing style/template read the call for paper details."

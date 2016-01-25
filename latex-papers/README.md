@@ -35,6 +35,9 @@ For all these reasons, I finally create a dirty script that do the work for me.
 As I'm pretty sure I'm not the only one out there struggling with paper
 initialization each time I have to write one, I decided to release it.
 
+This script had been successfully tested on GNU Linux, but should work on other
+UNIX (I wrote should guys).  
+
 ## Project Hierarchy
 
     +- templates/          this folder contains the files copied during paper init
@@ -53,7 +56,10 @@ make the `paper-init.bash` script executable.
 
 If you want to move the script/templates folder in another location, do what you
 want, but do no forget about modifying the `TEMPLATESPATH` variable so it points
-to the new `template.tex/Makefile` location.
+to the new `template.tex, Makefile` location.
+
+If you want to change the template directory name, edit the script and change
+the `TEMPLATEDIR` variable so it has the new directory name.
 
 
 ## Dependencies and Image Requirements
