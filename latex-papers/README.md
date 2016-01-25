@@ -55,8 +55,8 @@ make the `paper-init.bash` script executable.
     $ chmod u+x latex-papers/paper-init.bash
 
 If you want to move the script/templates folder in another location, do what you
-want, but do no forget about modifying the `TEMPLATESPATH` variable so it points
-to the new `template.tex, Makefile` location.
+want, but do no forget about modifying the `ABSOLUTE_PATH` variable so it points
+to the new location of the `template` directory.
 
 If you want to change the template directory name, edit the script and change
 the `TEMPLATEDIR` variable so it has the new directory name.
