@@ -1,0 +1,20 @@
+# Put me in /etc/bash_completion.d
+
+_sms()
+{
+    local CURWORD CONTACTNAMES
+    CURWORD="${COMP_WORDS[COMP_CWORD]}"
+
+    . ${HOME}/.phone-contacts
+
+    if [ ${COMP_CWORD} -eq 1 ]
+    then
+	CONTACTNAMES="${!contacts[@]}"
+	COMPREPLY=( $(compgen -W "${CONTACTNAMES}" -- ${CURWORD}) )
+    else
+        COMPREPLY=()
+    fi
+    return 0
+}
+
+complete -F _sms sms

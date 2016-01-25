@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+CONTACTS=~/.phone-contacts
+AUTHTOKEN=  # Put your auth token here
+APIKEY=     # Put you API Key here
+
+[ $# -lt 2 ] && {
+  echo "Missing parameters"
+  exit 1
+}
+
+# Load contacts
+. ${CONTACTS}
+
+TO=$1
+MESSAGE=$2
+NUMBER=${contacts[${TO}]}
+
+[ -z ${NUMBER} ] && {
+  echo "Number for '${TO}' is unknown"
+  exit 2
+}
+
+[ -z "${MESSAGE}" ] && {
+  echo "No empty message dude :\\"
+  exit 3
+}
+
+echo -e "Sending SMS to '${TO} (${NUMBER})'... \c"
+DATA='{"recipients":["'${NUMBER}'"],"message":"'"${MESSAGE}"'","dateSendOn":null,"encoding":0,"smsConnectorId":0,"store":true,"authToken":"'${AUTHTOKEN}'","apiKey":"'${APIKEY}'"}'
+ERRORCODE=$(curl -s -H 'Accept: application/json' \
+     -H 'Content-Type: application/json' \
+     -X POST \
+     --data-binary "${DATA}" \
+     https://api.mysms.com/rest/remote/sms/send |  grep -E -o errorCode\":[0-9]+ | cut -d: -f2)
+
+[ -z "${ERRORCODE}" ] && {
+  echo "Unknown error while sending SMS"
+  exit 4
+}
+
+declare -A error
+error[0]="OK"
+error[2]="A required parameter was not given"
+error[97]="The access to the api was denied"
+error[98]="You made too much requests in a short time"
+error[99]="The service is currently not available"
+error[100]="The auth token is invalid"
+error[700]="One or more recipients are not in the correct format or are containing invalid msisdns (i.e: 436761234567) --> '${NUMBER}'"
+error[701]="You only are allowed to send a sms to 50 Recipients per request"
+error[702]="One or more recipients are blocked by the system."
+error[600]="The api key is invalid"
+echo "${error["${ERRORCODE}"]}"

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Declare a map of contacts
+declare -A contacts
+
+# contacts[NAME]="+IDNUM" # Name -> Number (in a +IDXXXXXX format)
+# example:
+#  contacts[me]="+33123456789"
