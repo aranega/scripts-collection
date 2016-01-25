@@ -13,7 +13,7 @@ IMGEPS = $(addsuffix .eps, $(basename $(IMGS)))
 all: $(MAINDOC).pdf
 
 %.eps: %.svg
-	inkscape -z -T -E $@ $<
+	inkscape -z -E $@ $<
 
 %.eps: %.png
 	convert $< eps3:$@

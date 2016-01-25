@@ -40,10 +40,11 @@ UNIX (I wrote should guys).
 
 ## Project Hierarchy
 
-    +- templates/          this folder contains the files copied during paper init
-    | +- Makefile          the used Makefile
-    | +- template.tex      the used template (you can adapt it)
-    + paper-init.bash      the init script
+    +- templates/           this folder contains the files copied during paper init
+    | +- Makefile-dvipdf    the used Makefile for dvi -> pdf (default)
+    | +- Makefile-pdflatex  the used Makefile for pdflatex
+    | +- template.tex       the used template (you can adapt it)
+    + paper-init.bash       the init script
 
 
 ## Installation
@@ -68,11 +69,17 @@ The `Makefile` depends on three tools:
 
 * __latexmk__ for latex compilation chain
 * __Inkscape__ for SVG conversion to EPS (nicer result than ImageMagick)
-* __ImageMagick__ for PNG conversion to EPS
+* __ImageMagick__ for PNG conversion to EPS (ghost script is required)
 
 All images should be placed in the `imgs` directory in SVG or PNG format. The
 `Makefile` performs the format transformation to EPS format on its own.
 
+### Using `pdflatex` instead of `latex`
+
+In case you want to use `pdflatex` instead of `latex` (`dvipdf`) to compile your
+paper, you need to use the `-p` option on the command line in order to get the
+good `Makefile`. If you only use `pdflatex`, you can modify the `DEFAULTCOMPILER`
+variable and set it to `pdflatex`.
 
 ## Init Papers
 

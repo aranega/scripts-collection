@@ -1,0 +1,22 @@
+#
+# GNU Make Makefile
+#
+MAINDOC = $(shell basename $$(pwd))
+LTXARGS = -pdf -use-make -bibtex -quiet
+IMGDIR = ./imgs
+IMGS = $(wildcard $(IMGDIR)/*.svg)
+IMGSPNG = $(addsuffix .png, $(basename $(IMGS)))
+
+.PHONY: $(MAINDOC).pdf all clean
+
+all: $(MAINDOC).pdf
+
+%.png: %.svg
+	inkscape -z -e $@ $<
+
+$(MAINDOC).pdf: $(IMGSPNG) $(MAINDOC).tex
+	TEXINPUTS="./styles//:${TEXINPUTS}" BSTINPUTS="./styles//:${BSTINPUTS}" latexmk $(LTXARGS) $(MAINDOC).tex
+
+clean:
+	latexmk -bibtex -C
+	rm -f $(IMGSPNG) *~

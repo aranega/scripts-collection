@@ -2,6 +2,7 @@
 
 DEFAULTPATH=.
 TEMPLATEDIR=templates
+DEFAULTCOMPILER=dvipdf
 
 ABSOLUTE_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
 TEMPLATESPATH=${ABSOLUTE_PATH}/${TEMPLATEDIR}
@@ -16,6 +17,7 @@ where:
     -u, --url               an URL where a style should be downloaded
     -c, --clean             clean existing style dir for PROJECT_NAME
     -d                      gives the directory where the project should be found/created
+    -p, --pdflatex          uses pdflatex instead of latex to compile your project
     PROJECT_NAME            chains which need to be compiled and/or deployed
 
 WARNING: Long options as '--style' or '--url' only work if GNU getopt is used.
@@ -24,9 +26,9 @@ WARNING: Long options as '--style' or '--url' only work if GNU getopt is used.
 getopt -T > /dev/null
 if [ $? -eq 4 ]
 then
-  OPTS=$( getopt -o u:s:d:ch -l url:,style:,clean,help -- "$@" )
+  OPTS=$( getopt -o u:s:d:cph -l url:,style:,clean,pdflatex,help -- "$@" )
 else
-  OPTS=$( getopt u:s:d:ch "$@" )
+  OPTS=$( getopt u:s:d:cph "$@" )
 fi
 
 [ $? != 0 ] && exit 2
@@ -44,6 +46,7 @@ while true ; do
         -u|--url) URL=$2; shift 2;;
         -c|--clean) CHANGESTYLE=true; shift;;
         -d) PREFIX=$2; PREFIX=${PREFIX%/}; shift 2;;
+        -p|--pdflatex) DEFAULTCOMPILER=pdflatex; shift;;
         -h|--help) echo "$usage"; exit 5;;
         --) shift ; break ;;
         *) echo "Internal error!" ; exit 1 ;;
@@ -103,7 +106,7 @@ STYLEDIR=${PROJPATH}/styles
 }
 
 # Copy template files and filter vars
-cp ${TEMPLATESPATH}/Makefile ${PROJPATH}/
+cp ${TEMPLATESPATH}/Makefile-${DEFAULTCOMPILER} ${PROJPATH}/Makefile
 sed 's/#PROJNAME#/'${NAME}'/g' ${TEMPLATESPATH}/template.tex > ${PROJPATH}/${NAME}.tex
 touch ${PROJPATH}/${NAME}.bib
 

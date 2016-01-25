@@ -4,13 +4,15 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 %\usepackage[francais]{babel}
-% Use of .eps files placed into 'imgs' directory
 \usepackage{graphicx}
-\graphicspath{{./imgs/}}
-\DeclareGraphicsExtensions{.eps}
 \usepackage{ifpdf}
+
+% Use of image files placed into 'imgs' directory
+\graphicspath{{./imgs/}}
 \ifpdf
-  \usepackage{epstopdf}
+  \DeclareGraphicsExtensions{.png}
+\else
+  \DeclareGraphicsExtensions{.eps}
 \fi
 
 % Use urls
