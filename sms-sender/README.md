@@ -7,9 +7,9 @@ but... meh).
 
 ## Requirements
 
-This script uses a lot (almost 2) of bash associative arrays so `Bash >= 4` is
+This script uses a lot of bash associative arrays (2) so `Bash >= 4` is
 required. Calls to send the SMS are performed using `cURL`, sooooo I guess
-you need `cURL. Also, you need the [mySMS App](https://play.google.com/store/apps/details?id=com.mysms.android.sms) (this
+you need `cURL`. Also, you need the [mySMS App](https://play.google.com/store/apps/details?id=com.mysms.android.sms) (this
 link is for Android, I'm sure you can find the one for iPhone on your own).
 To sum up:
 
