@@ -77,7 +77,7 @@ STYLEDIR=${PROJPATH}/styles
       URL="ftp://ftp.springer.de/pub/tex/latex/llncs/latex2e/llncs2e.zip"
       ;;
     ieee)
-      URL="http://www.ieee.org/documents/IEEEtran.zip"
+      URL="http://www.ieee.org/documents/IEEEtran.zip http://www.ieee.org/documents/IEEEtranBST2.zip" # Template + bibtex template
       ;;
     acm)
       URL="http://www.acm.org/publications/article-templates/sig-alternate-05-2015.cls http://www.acm.org/publications/article-templates/acmcopyright.sty"
