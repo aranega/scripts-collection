@@ -4,7 +4,7 @@ DEFAULTPATH=.
 TEMPLATEDIR=templates
 DEFAULTCOMPILER=dvipdf
 
-ABSOLUTE_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
+ABSOLUTE_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 TEMPLATESPATH=${ABSOLUTE_PATH}/${TEMPLATEDIR}
 KNOWNSTYLES="lncs|ieee|acm|elsevier"
 PREFIX=${DEFAULTPATH}
@@ -63,16 +63,16 @@ NAME="$1"
 PROJPATH=${PREFIX}/${NAME}
 
 # Create project hierarchie
-mkdir -p ${PROJPATH}/{imgs,styles}
+mkdir -p "${PROJPATH}"/{imgs,styles}
 
 STYLEDIR=${PROJPATH}/styles
 [ -z ${CHANGESTYLE} ] || {
   echo "Cleaning style dir"
-  rm -r ${STYLEDIR}/*
+  rm -r "${STYLEDIR:?}"/*
 }
 
-[ -z ${STYLE} ] || {
-  case ${STYLE} in
+[ -z "${STYLE}" ] || {
+  case "${STYLE}" in
     lncs)
       URL="ftp://ftp.springer.de/pub/tex/latex/llncs/latex2e/llncs2e.zip"
       ;;
@@ -92,24 +92,24 @@ STYLEDIR=${PROJPATH}/styles
   esac
 }
 
-[ -z ${URL} ] || {
-  wget -P ${STYLEDIR} $URL
-  [ ${URL: -4} == ".zip" ] && unzip ${STYLEDIR}/$(basename $URL) -d ${STYLEDIR}
+[ -z "${URL}" ] || {
+  wget -P "${STYLEDIR}" "$URL"
+  [ "${URL: -4}" == ".zip" ] && unzip "${STYLEDIR}/$(basename "$URL")" -d "${STYLEDIR}"
 }
 
 [ -z ${CHANGESTYLE} ] || {
   exit 6
 }
 
-[ -f ${PROJPATH}/${NAME}.tex ] && {
+[ -f "${PROJPATH}/${NAME}.tex" ] && {
   exit 0
 }
 
 # Copy template files and filter vars
-cp ${TEMPLATESPATH}/Makefile-${DEFAULTCOMPILER} ${PROJPATH}/Makefile
-sed 's/#PROJNAME#/'${NAME}'/g' ${TEMPLATESPATH}/template.tex > ${PROJPATH}/${NAME}.tex
-touch ${PROJPATH}/${NAME}.bib
+cp "${TEMPLATESPATH}/Makefile-${DEFAULTCOMPILER}" "${PROJPATH}/Makefile"
+sed 's/#PROJNAME#/'"${NAME}"'/g' "${TEMPLATESPATH}/template.tex" > "${PROJPATH}/${NAME}.tex"
+touch "${PROJPATH}/${NAME}.bib"
 
 echo "
-Your project ${NAME} is set at this location: $(cd `dirname "${PROJPATH}"` && pwd)
+Your project ${NAME} is set at this location: $(cd "$(dirname "${PROJPATH}")" && pwd)
 If you used a pre-existing style/template read the call for paper details."
