@@ -38,7 +38,7 @@ initialization each time I have to write one, I decided to release it.
 This script had been successfully tested on GNU Linux, but should work on other
 UNIX (I wrote should guys).  
 
-## Project Hierarchy
+## Project Hierarchy
 
     +- templates/           this folder contains the files copied during paper init
     | +- Makefile-dvipdf    the used Makefile for dvi -> pdf (default)
@@ -47,7 +47,7 @@ UNIX (I wrote should guys).
     + paper-init.bash       the init script
 
 
-## Installation
+## Installation
 
 This is craft you have there so no fancy stuffs, just clone the repository and
 make the `paper-init.bash` script executable.
@@ -74,7 +74,7 @@ The `Makefile` depends on three tools:
 All images should be placed in the `imgs` directory in SVG or PNG format. The
 `Makefile` performs the format transformation to EPS format on its own.
 
-### Using `pdflatex` instead of `latex`
+### Using `pdflatex` instead of `latex`
 
 In case you want to use `pdflatex` instead of `latex` (`dvipdf`) to compile your
 paper, you need to use the `-p` option on the command line in order to get the
